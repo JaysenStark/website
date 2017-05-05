@@ -234,9 +234,10 @@
       } else if (action == "all_in"){
         context = {"action": "all_in", "amount": null}
       } else if (action == "bet_to"){
-        var amount = $("#amount").val();
+        var amount = parseInt($("#amount").val());
+        console.log("amount:" + amount);
         context = {"action": "bet_to", "amount": amount};
-        low = $("#min_amount").val();
+        low = parseInt($("#min_amount").val());
         high = 20000;
         if(amount < low || amount > high){
           console.log("invalid amount" + amount);
