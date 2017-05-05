@@ -308,7 +308,7 @@ class GameState():
                 l.append('min_bet')
                 l.append('bet_to')
                 # l.append('bet'+str(min_size)+','+str(GAME_STACK))
-            print(l)
+            # print(l)
             return l
 
 

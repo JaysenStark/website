@@ -1,12 +1,27 @@
+
+<link rel="stylesheet" type="text/css" href="/static/_header.css">
 <div class="header">
 	<div class="logo">
 		<div class="logo_container">
-			<img src="/static/hit_logo.jpg">
+			<img id="logo" src="/static/hit_logo.jpg">
 		</div>
 	</div>
 	<div class="user">
-		<div class="">
-			<span class="username" id="username">Test</span>
+
+		{% if username %}
+		<div class="username_container">
+			<span class="username" id="username">{{ username }}</span>
 		</div>
+		<div class="operations">
+			<div class="logout">
+				<button class="button" id="logout">logout</button>
+			</div>
+			<div class="endgame">
+				
+			</div>
+		</div>
+		{% endif %}
+
 	</div>
 </div>
+
