@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-    console.log("ready");
+    // console.log("ready");
     // update gui
     update();
     // add button click listener
@@ -20,13 +20,13 @@
     $("#amount").click(function(){$("#amount").val("");});
 
     function update(){
-      console.log("update");
+      // console.log("update");
       disable_all_buttons();
       $.get("{% url 'texas:action' %}",{"action":"update"}, do_update);
     };
 
     function do_update(ret){
-      console.log("do update");
+      // console.log("do update");
       // console.log(ret)
 
       do_update_cards(ret);
@@ -106,7 +106,7 @@
     }; // function do_update_cards end
 
     function do_update_chips(ret){
-      console.log("---to update chips");
+      // console.log("---to update chips");
       var player_spent = ret.spent;
       var opponent_spent = ret.opponent_spent;
       var player_stack = 20000 - player_spent;
@@ -213,10 +213,10 @@
 
     function do_action(action){
       // construct action
-      console.log("do_action:" + action);
+      // console.log("do_action:" + action);
       var context;
       if(action == "next"){
-        console.log("reset...");
+        // console.log("reset...");
         reset_gui();
         context = {"action": "next", "amount" : null};
       } else if (action == "fold"){
@@ -235,12 +235,12 @@
         context = {"action": "all_in", "amount": null}
       } else if (action == "bet_to"){
         var amount = parseInt($("#amount").val());
-        console.log("amount:" + amount);
+        // console.log("amount:" + amount);
         context = {"action": "bet_to", "amount": amount};
         low = parseInt($("#min_amount").val());
         high = 20000;
         if(amount < low || amount > high){
-          console.log("invalid amount" + amount);
+          // console.log("invalid amount" + amount);
           $("#amount").val("invalid amount! please retry!");
           return 0;
         }  
