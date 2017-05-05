@@ -23,7 +23,9 @@ class Starter():
         self.path_setting(agent=None)
         self.ports_setting(ports)
         self.name_setting(agent_name=a_name, player_name=p_name)
-        self.game_setting(rng_seed=seed)
+        time_str = time.strftime("%Y-%m-%d-%H:%M:%S", time.localtime()) 
+        m_name = '[%s]vs[%s]at[%s]' % (a_name, p_name, time_str)
+        self.game_setting(rng_seed=seed, match_name=m_name)
         self.command_setting()
 
 
@@ -75,6 +77,7 @@ class Starter():
       
 
     def quick_start(self):
+        print(self.dealer_command)
         self.start_acpc_dealer(self.dealer_command)
         time.sleep(0.2)
        
