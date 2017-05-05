@@ -29,6 +29,13 @@ def login(request):
     else:
         context['message'] = 'login failed!'
         return render(request, 'texas/index.html', context)
+
+def logout(request):
+    name = request.session['username']
+    print('%s is about ot logout' % name)
+    del request.session['username']
+    return render(request, 'texas/index.html')
+
         
 def start(request):
     username = request.session.get('username', default=None)

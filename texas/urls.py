@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^start/$', views.start, name='start'),
     url(r'^update/$', views.update, name='update'),
     url(r'^test/$', views.test, name='test'),
+    url(r'^logout/$', views.logout, name='logout'),
 ]
