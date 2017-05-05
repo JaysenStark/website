@@ -1,0 +1,464 @@
+<link rel="stylesheet" type="text/css" href="/static/no_limit_texas.css">
+<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- <script src="/static/no_limit_texas.js"></script> -->
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    console.log("ready");
+    // update gui
+    update();
+    // add button click listener
+    $("#next").click(function(){do_action("next")});
+    $("#fold").click(function(){do_action("fold")});
+    $("#check").click(function(){do_action("check")});
+    $("#call").click(function(){do_action("call")});
+    $("#min_bet").click(function(){do_action("min_bet")});
+    $("#half_pot").click(function(){do_action("half_pot")});
+    $("#one_pot").click(function(){do_action("one_pot")});
+    $("#all_in").click(function(){do_action("all_in")});
+    $("#bet_to").click(function(){do_action("bet_to")});
+    $("#amount").click(function(){$("#amount").val("");});
+
+    function update(){
+      console.log("update");
+      disable_all_buttons();
+      $.get("{% url 'texas:action' %}",{"action":"update"}, do_update);
+    };
+
+    function do_update(ret){
+      console.log("do update");
+      // console.log(ret)
+
+      do_update_cards(ret);
+      do_update_chips(ret);
+      do_update_information(ret);
+
+      // update button and related text field and hidden field
+      do_update_buttons(ret);  
+      do_update_dealer_button(ret);
+
+      try_invoke_update(ret);
+    };
+
+    function do_update_dealer_button(ret){
+      if(ret.spent == "50" && ret.opponent_spent == "100"){
+        // dealer button at player position
+        $("#player_dealer").html("Dealer");
+      } else if(ret.spent == "100" && ret.opponent_spent == "50") {
+        // dealer button at opponent position
+        $("#opponent_dealer").html("Dealer");
+      } else {
+        ;
+      }
+    }
+
+    function disable_all_buttons(){
+      $("#next").attr("disabled", true); 
+      $("#fold").attr("disabled", true); 
+      $("#check").attr("disabled", true); 
+      $("#call").attr("disabled", true); 
+      $("#min_bet").attr("disabled", true); 
+      $("#half_pot").attr("disabled", true); 
+      $("#one_pot").attr("disabled", true); 
+      $("#all_in").attr("disabled", true); 
+      $("#bet_to").attr("disabled", true); 
+    }
+
+    function do_update_cards(ret){
+      // update player_hole
+      if(ret.hole != null){
+        for (var i = 0; i < ret.hole.length; i++) {
+          card_str = ret.hole[i];
+          rank = card_str.slice(0,1);
+          suit = card_str.slice(1,2);
+          card_rank_id = "#player_card_" + i + "_rank";
+          card_suit_id = "#player_card_" + i + "_suit";
+          $(card_rank_id).html(str_to_rank(rank));
+          $(card_suit_id).html(str_to_suit(suit));
+          $(card_suit_id).css("color", str_to_color(suit));
+        }
+      }
+      if(ret.public_cards != null){
+        for (var i = 0; i < ret.public_cards.length; i++) {
+          card_str = ret.public_cards[i];
+          rank = card_str.slice(0,1);
+          suit = card_str.slice(1,2);
+          card_rank_id = "#public_card_" + i + "_rank";
+          card_suit_id = "#public_card_" + i + "_suit";
+          $(card_rank_id).html(str_to_rank(rank));
+          $(card_suit_id).html(str_to_suit(suit));
+          $(card_suit_id).css("color", str_to_color(suit));
+        }
+      }
+      if(ret.opponent_hole != null){
+        for (var i = 0; i < ret.opponent_hole.length; i++) {
+          card_str = ret.opponent_hole[i];
+          rank = card_str.slice(0,1);
+          suit = card_str.slice(1,2);
+          card_rank_id = "#opponent_card_" + i + "_rank";
+          card_suit_id = "#opponent_card_" + i + "_suit";
+          $(card_rank_id).html(str_to_rank(rank));
+          $(card_suit_id).html(str_to_suit(suit));
+          $(card_suit_id).css("color", str_to_color(suit));
+        }
+      }
+
+    }; // function do_update_cards end
+
+    function do_update_chips(ret){
+      console.log("---to update chips");
+      var player_spent = ret.spent;
+      var opponent_spent = ret.opponent_spent;
+      var player_stack = 20000 - player_spent;
+      var opponent_stack = 20000 - opponent_spent;
+      $("#opponent_stack").html(opponent_stack);
+      $("#opponent_bet").html(opponent_spent);
+      $("#player_stack").html(player_stack);
+      $("#player_bet").html(player_spent);
+    }
+
+    function do_update_buttons(ret){
+      // set hint for textfield
+      var min_bet = ret.min_bet;
+      var hint = "valid amount:[" + min_bet +"," + "20000]";
+      // console.log(hint);
+      $("#amount").val(hint);
+
+      $("#min_amount").val(min_bet);
+
+      var next_hand_flag = false;
+      var fold_flag = false;
+      var check_flag = false;
+      var call_flag = false;
+      var min_bet_flag = false;
+      var half_pot_flag = false;
+      var one_pot_flag = false;
+      var all_in_flag = false;
+      var bet_to_falg = false;
+      for(index in ret.actions){
+        action = ret.actions[index];
+        if(action == "next"){
+          next_hand_flag = true;
+        } else if(action == "fold"){
+          fold_flag = true;
+        } else if (action == "check") {
+          check_flag = true;
+        } else if (action == "call") {
+          call_flag = true;
+        } else if (action == "min_bet") {
+          min_bet_flag = true;
+        } else if (action == "half_pot") {
+          half_pot_flag = true;
+        } else if (action == "one_pot") {
+          one_pot_flag = true;
+        } else if (action == "all_in") {
+          all_in_flag = true;
+        } else if (action == "bet_to") {
+          bet_to_falg = true;
+        }
+
+        if(next_hand_flag) {
+          $("#next").attr("disabled", false); 
+        } else {
+          $("#next").attr("disabled", true); 
+        }
+        if(fold_flag){
+          $("#fold").attr("disabled", false); 
+        } else {
+          $("#fold").attr("disabled", true); 
+        }
+        if(check_flag) {
+          $("#check").attr("disabled", false); 
+        } else {
+          $("#check").attr("disabled", true); 
+        }
+        if(call_flag) {
+          $("#call").attr("disabled", false); 
+        } else {
+          $("#call").attr("disabled", true); 
+        }
+        if(min_bet_flag) {
+          $("#min_bet").attr("disabled", false); 
+        } else {
+          $("#min_bet").attr("disabled", true); 
+        }
+        if(half_pot_flag) {
+          $("#half_pot").attr("disabled", false); 
+        } else {
+          $("#half_pot").attr("disabled", true); 
+        }
+        if(one_pot_flag) {
+          $("#one_pot").attr("disabled", false); 
+        } else {
+          $("#one_pot").attr("disabled", true); 
+        }
+        if(all_in_flag) {
+          $("#all_in").attr("disabled", false); 
+        } else {
+          $("#all_in").attr("disabled", true); 
+        }
+        if(bet_to_falg) {
+          $("#bet_to").attr("disabled", false); 
+        } else {
+          $("#bet_to").attr("disabled", true); 
+        }
+      }
+    };
+
+    // update message, history, socre
+    function do_update_information(ret){
+      $("#message").html(ret.message);
+      $("#score").html(ret.score);
+    };
+
+    function do_action(action){
+      // construct action
+      console.log("do_action:" + action);
+      var context;
+      if(action == "next"){
+        console.log("reset...");
+        reset_gui();
+        context = {"action": "next", "amount" : null};
+      } else if (action == "fold"){
+        context = {"action": "fold", "amount": null};
+      } else if(action == "check"){
+        context = {"action": "check", "amount": null};
+      } else if (action == "call"){
+        context = {"action": "call", "amount": null};
+      } else if (action == "min_bet"){
+        context = {"action": "min_bet", "amount": null}
+      } else if (action == "half_pot"){
+        context = {"action": "half_pot", "amount": null}
+      } else if (action == "one_pot"){
+        context = {"action": "one_pot", "amount": null}
+      } else if (action == "all_in"){
+        context = {"action": "all_in", "amount": null}
+      } else if (action == "bet_to"){
+        var amount = $("#amount").val();
+        context = {"action": "bet_to", "amount": amount};
+        low = $("#min_amount").val();
+        high = 20000;
+        if(amount < low || amount > high){
+          console.log("invalid amount" + amount);
+          $("#amount").val("invalid amount! please retry!");
+          return 0;
+        }  
+      }
+      // send action
+      $.get("{% url 'texas:action' %}", context, do_update); 
+    };
+
+    function try_invoke_update(ret){
+      if(ret.player_turn == false){
+        update();
+      }
+    };
+
+    function reset_gui(){
+      $("#message").html("");
+     
+      $("#opponent_card_0_rank").html("");
+      $("#opponent_card_0_suit").html("");
+      $("#opponent_card_1_rank").html("");
+      $("#opponent_card_1_suit").html("");
+      $("#public_card_0_rank").html("");
+      $("#public_card_0_suit").html("");
+      $("#public_card_1_rank").html("");
+      $("#public_card_1_suit").html("");
+      $("#public_card_2_rank").html("");
+      $("#public_card_2_suit").html("");
+      $("#public_card_3_rank").html("");
+      $("#public_card_3_suit").html("");
+      $("#public_card_4_rank").html("");
+      $("#public_card_4_suit").html("");
+      $("#player_card_0_rank").html("");
+      $("#player_card_0_suit").html("");
+      $("#player_card_1_rank").html("");
+      $("#player_card_1_suit").html("");
+
+      $("#player_dealer").html("");
+      $("#opponent_dealer").html("");
+
+    };
+
+    function str_to_suit(suit){
+      if(suit == "h"){
+        return "♥";
+      } else if(suit == "c"){
+        return "♣";
+      } else if(suit == "s"){
+        return "♠";
+      }else{
+        return "♦";
+      }
+    };
+
+    function str_to_rank(rank){
+      if(rank == "T"){
+        return "10";
+      } else {
+        return rank;
+      }
+    }
+
+    function str_to_color(suit){
+      if(suit == "h" || suit == "d"){
+        return "red";
+      } else {
+        return "black";
+      }
+    }
+
+  })
+</script>
+
+<div class="game_interface">
+  <div class="poker_table">
+    <div class="opponent_area">
+      <div class="hole">
+        <div class="card_container">
+          <div class="card">
+            <span class="rank" id="opponent_card_0_rank"></span>
+            <span class="suit" id="opponent_card_0_suit"></span>
+          </div>
+        </div>
+        <div class="card_container">
+          <div class="card">
+            <span class="rank" id="opponent_card_1_rank"></span>
+            <span class="suit" id="opponent_card_1_suit"></span>
+          </div>
+        </div>
+      </div>
+      <div class="dealer_area">
+        <div class="dealer_container">
+          <span class="dealer" id="opponent_dealer"></span>
+        </div>
+      </div>
+      <div class="chip_area">
+        <div class="stack_container">
+          <p class="stack">stack:<span class="stack" id="opponent_stack"></span></p>
+        </div>
+        <div class="bet_container">
+          <p class="bet">bet:<span class="bet" id="opponent_bet"></span></p>
+        </div>        
+      </div>
+
+    </div>
+
+    <div class="public_area">
+      <div class="public_cards">
+        <div class="card_container">
+          <div class="card">
+            <span class="rank" id="public_card_0_rank"></span>
+            <span class="suit" id="public_card_0_suit"></span>
+          </div>
+        </div>
+        <div class="card_container">
+          <div class="card">
+            <span class="rank" id="public_card_1_rank"></span>
+            <span class="suit" id="public_card_1_suit"></span>
+          </div>
+        </div>
+        <div class="card_container">
+          <div class="card">
+            <span class="rank" id="public_card_2_rank"></span>
+            <span class="suit" id="public_card_2_suit"></span>
+          </div>
+        </div>
+        <div class="card_container">
+          <div class="card">
+            <span class="rank" id="public_card_3_rank"></span>
+            <span class="suit" id="public_card_3_suit"></span>
+          </div>
+        </div>
+        <div class="card_container">
+          <div class="card">
+            <span class="rank" id="public_card_4_rank"></span>
+            <span class="suit" id="public_card_4_suit"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="player_area">
+
+      <div class="chip_area">
+        <div class="stack_container">
+          <p class="stack">stack:<span class="stack" id="player_stack"></span></p>
+        </div>
+        <div class="bet_container">
+          <p class="bet">bet:<span class="bet" id="player_bet"></span></p>
+        </div>        
+      </div>
+      <div class="dealer_area">
+        <div class="dealer_container">
+          <span class="dealer" id="player_dealer"></span>
+        </div>
+      </div>
+      <div class="hole">
+        <div class="card_container">
+          <div class="card">
+            <span class="rank" id="player_card_0_rank"></span>
+            <span class="suit" id="player_card_0_suit"></span>
+          </div>
+        </div>
+        <div class="card_container">
+          <div class="card">
+            <span class="rank" id="player_card_1_rank"></span>
+            <span class="suit" id="player_card_1_suit"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="inforamtion_area">
+    <div class="message_area">
+      <p class="matchstate">Message:<span class="matchstate" id="message"></span></p>
+    </div>
+    <div class="history_area">
+      <span class=""></span>
+    </div>
+    <div class="score_area">
+      <div class="score_container">
+        <p class="score">Score:<span id="score"></span></p>
+      </div>
+    </div>
+
+    <div class="action_area">
+      <div class="button_container">
+        <button class="button" id="next" value="next">Next Hand</button>
+      </div>
+      <div class="button_container">
+        <button class="button" id="fold" value="fold">Fold</button>
+      </div>
+      <div class="button_container">
+        <button class="button" id="check" value="check">Check</button>
+      </div>
+      <div class="button_container">
+        <button class="button" id="call" value="call">Call</button>
+      </div>
+      <div class="button_container">
+        <button class="button" id="min_bet" value="min_bet">Min Bet</button>
+      </div>
+      <div class="button_container">
+        <button class="button" id="half_pot" value="half_pot">Half Pot</button>
+      </div>
+      <div class="button_container">
+        <button class="button" id="one_pot" value="one_pot">One Pot</button>
+      </div>
+      <div class="button_container">
+        <button class="button" id="all_in" value="all_in">All in</button>
+      </div>
+      <div class="button_container">
+        <button class="button" id="bet_to" value="bet_to">Bet to</button>
+        <input type="text" name="amount" id="amount" />        
+      </div>
+      <div>
+        <input type="hidden" name="min_amount" id="min_amount" value="" />
+      </div>
+
+    </div>
+  </div>
+</div>

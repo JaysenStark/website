@@ -1,0 +1,132 @@
+.button_container{
+    margin: 4px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction:row;
+}
+
+.dealer_container{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+
+}
+
+.score_container{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+
+.card{
+    border: 2px solid;
+    height: 80px;
+    width: 55px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction:column;
+    border-radius:  5px;
+}
+
+.rank{
+    width:20px;
+    height:20px;
+    text-align: left;
+}
+
+.suit{
+    width:55px;
+    height:30px;
+    text-align: center;
+}
+
+.card_container{
+    margin:15px;
+}
+
+.game_interface{
+    flex-direction:column;
+}
+
+.poker_table{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction:column;
+}
+
+.hole, .public_cards{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction:row;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+
+.opponent_area{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction:column;
+}
+
+.chip_area{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction:row
+    -webkit-justify-content: center;
+    justify-content: center; 
+}
+
+.stack_container p{
+    margin-right: 22.5px;
+}
+
+.bet_container p{
+    margin-left: 22.5px;
+}
+
+
+
+.public_area{
+    ;
+}
+
+.message_area{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center; 
+}
+
+.player_area{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction:column;
+}
+
+.inforamtion_area{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction:column;
+}
+
+.action_area{
+    -webkit-justify-content: center;
+    justify-content: center;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction:row;
+}
+
+
+

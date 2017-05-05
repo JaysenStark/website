@@ -1,0 +1,380 @@
+
+<html>
+  <head>
+    <link href="/static/game_interface.css" rel="stylesheet" type="text/css" />
+
+    <!-- <link rel="stylesheet" type="text/css" href="game_interface.css"> -->
+  </head>
+
+<body>
+
+    <div class="game_interface">
+
+        <div class="poker_table">
+
+            <div class="oppo_area">
+                <div class="score_area">
+                    <div class="score_container">
+                       <p>score:<span class="score" id="oppo_score"></span></p>
+                    </div>
+                </div>
+                <div class="hole_area">
+                    <div class="card">
+                        <div class="rank"><span class="rank" id="o0rank"></span></div>
+                        <div class="suit"><span class="suit" id="o0suit"></span></div>
+                    </div>
+                    <div class="card">
+                        <div class="rank"><span class="rank" id="o1rank"></span></div>
+                        <div class="suit"><span class="suit" id="o1suit"></span></div>
+                    </div>
+                </div>
+                <div class="bet_area">
+                    <div class="bet_container">
+                        <p>total bets:<span class="bets" id='oppo_bet'></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blank_area">
+            </div>
+
+            <div class="public_area">
+                <div class="pbcard">
+                    <div class="rank"><span class="rank" id="pb0rank"></span></div>
+                    <div class="suit"><span class="suit" id="pb0suit"></span></div>
+                </div>
+                <div class="pbcard">
+                    <div class="rank"><span class="rank" id="pb1rank"></span></div>
+                    <div class="suit"><span class="suit" id="pb1suit"></span></div>
+                </div>
+                <div class="pbcard">
+                    <div class="rank"><span class="rank" id="pb2rank"></span></div>
+                    <div class="suit"><span class="suit" id="pb2suit"></span></div>
+                </div>
+                <div class="pbcard">
+                    <div class="rank"><span class="rank" id="pb3rank"></span></div>
+                    <div class="suit"><span class="suit" id="pb3suit"></span></div>
+                </div>
+                <div class="pbcard">
+                    <div class="rank"><span class="rank" id="pb4rank"></span></div>
+                    <div class="suit"><span class="suit" id="pb4suit"></span></div>
+                </div>
+                <div>
+                    <input type="hidden" id="message" value="" />
+                </div>
+            </div>
+
+            <div class="blank_area">
+            </div>
+
+            <div class="player_area">
+                <div class="score_area">
+                    <div class="score_container">
+                       <p>score:<span class="score" id="player_score"></span></p>
+                    </div>
+                </div>
+                <div class="hole_area">
+                    <div class="card">
+                        <div class="rank"><span class="rank" id="p0rank"></span></div>
+                        <div class="suit"><span class="suit" id="p0suit"></span></div>
+                    </div>
+                    <div class="card">
+                        <div class="rank"><span class="rank" id="p1rank"></span></div>
+                        <div class="suit"><span class="suit" id="p1suit"></span></div>
+                    </div>
+                </div>
+                <div class="bet_area">
+                    <div class="bet_container">
+                        <p>total bets:<span class="bets" id="player_bet"></span></p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="button_area">
+              <div class="small_button_area">
+                <div class="button_container">
+                    <button type="button" id="call" class="button" value="c">CALL/CHECK</button>
+                </div>
+                <div class="button_container">
+                    <button type="button" id="raise" class="button" value="r">RAISE/BET</button>
+                </div>
+                <div class="button_container">
+                    <button type="button" id="fold" class="button" value="f">FOLD</button>
+                </div>
+                <div class="button_container">
+                    <button type="button" id="next" class="button" value="n">NEXT_HAND</button>
+                </div>
+              </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+
+
+<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+      
+      var i = 0;
+      update_once()
+
+      $("#call").click(function(){  
+        $("#call").attr("disabled", true); 
+        $("#raise").attr("disabled", true); 
+        $("#fold").attr("disabled", true);       
+        var action = $("#call").val();
+        var string = $("#message").val();
+        var response = string + ":" + action + "\r\n"
+        $.get("{% url 'texas:action' %}",{'response':response}, do_update);
+      });
+
+      $("#raise").click(function(){ 
+        $("#call").attr("disabled", true); 
+        $("#raise").attr("disabled", true); 
+        $("#fold").attr("disabled", true);        
+        var action = $("#raise").val();
+        var string = $("#message").val();
+        var response = string + ":" + action + "\r\n"
+        $.get("{% url 'texas:action' %}",{'response':response}, do_update);
+      });
+
+      $("#fold").click(function(){
+        $("#call").attr("disabled", true); 
+        $("#raise").attr("disabled", true); 
+        $("#fold").attr("disabled", true);         
+        var action = $("#fold").val();
+        var string = $("#message").val();
+        var response = string + ":" + action + "\r\n"
+        $.get("{% url 'texas:action' %}",{'response':response}, do_update);
+      });
+
+      $("#next").click(function(){
+        $("#call").attr("disabled", true); 
+        $("#raise").attr("disabled", true); 
+        $("#fold").attr("disabled", true);  
+        for (var i=0; i<2; i++){
+            rankitem = '#o' + i + 'rank';
+            suititem = '#o' + i + 'suit';
+            $(rankitem).html('');
+            $(suititem).html('');
+        }
+
+        for (var i=0; i<5; i++){
+          rankitem = '#pb' + i + 'rank';
+          suititem = '#pb' + i + 'suit';
+          $(rankitem).html('');
+          $(suititem).html('');
+        }
+        $.get("{% url 'texas:action' %}",{'response':'next'}, do_update);
+      });
+
+      function do_update(ret){ 
+        $('#message').val(ret.msg);
+        // $('#player_turn').html(ret.player_turn);
+        // $('#testT').html(ret.actions);
+        
+        render_numbers(ret);
+        render_cards(ret);
+        
+
+        if(ret.gameover == true){
+          one_hand_over();
+        } else if(ret.gameover == false){
+          during_one_hand();
+        }
+        render_btns(ret);
+
+        if(ret.player_turn == false){
+          // $.delay(1000)
+          update_once();
+        } else if(ret.player_turn == true){
+          ;
+        } else {
+          ;
+        }
+        
+      };
+
+      function one_hand_over(){
+        
+        $('#call').hide();
+        $('#raise').hide();
+        $('#fold').hide();
+        $('#next').show();
+      };
+
+      function during_one_hand(){
+        $('#call').show();
+        $('#raise').show();
+        $('#fold').show();
+        $('#next').hide();
+      };
+
+      function update(){
+        $("#call").attr("disabled", true); 
+        $("#raise").attr("disabled", true); 
+        $("#fold").attr("disabled", true); 
+        $.get("{% url 'texas:update' %}", {}, do_update);  
+      };
+
+      function do_update_once(ret){
+        if(ret == null){
+          update_once();
+        } else {
+          
+          $('#message').val(ret.msg);
+          $('#player_turn').html(ret.player_turn);
+
+          render_numbers(ret);
+          render_cards(ret);
+          
+          
+          if(ret.gameover == true){
+           
+            one_hand_over();
+          } else if(ret.gameover == false){
+            during_one_hand();
+          }
+          render_btns(ret);
+
+          if(ret.player_turn == false){
+            // $.delay(1000)
+            update_once();
+          }
+          
+        }
+      };
+
+      function update_once(){
+        $("#call").attr("disabled", true); 
+        $("#raise").attr("disabled", true); 
+        $("#fold").attr("disabled", true); 
+        $.get("{% url 'texas:update' %}", {}, do_update_once);
+      };
+
+      function render_numbers(ret){
+        var player_score = ret.score
+        var opp_score = -ret.score
+        var player_spent = ret.spent
+        var opp_spent = ret.opp_spent
+
+        // score
+        $('#oppo_score').html(opp_score);
+        $('#player_score').html(player_score);
+        //bets
+        $('#player_bet').html(player_spent);
+        $('#oppo_bet').html(opp_spent);
+        //stack
+        $('#player_stack').html(240 - player_spent);
+        $('#oppo_stack').html(240 - opp_spent);
+      }
+
+      function render_btns(ret){
+        var call_bool = false;
+        var fold_bool = false;
+        var raise_bool = false;
+        for (idx in ret.actions){
+          a = ret.actions[idx];
+          if(a == 'r'){
+            raise_bool = true;
+          }
+          if(a == 'c'){
+            call_bool = true;
+          }
+          if(a == 'f'){
+            fold_bool = true;
+          }
+        }
+
+        if(call_bool){
+          $("#call").attr("disabled", false); 
+        } else {
+          $("#call").attr("disabled", true); 
+        }
+
+        if(raise_bool){
+          $("#raise").attr("disabled", false); 
+        } else {
+          $("#raise").attr("disabled", true); 
+        }
+
+        if(fold_bool){
+          $("#fold").attr("disabled", false); 
+        } else {
+          $("#fold").attr("disabled", true); 
+        }
+      }
+
+      function str_to_suit(suit){
+        if(suit == 'h'){
+          return '♥';
+        } else if(suit == 'c'){
+          return '♣';
+        } else if(suit == 's'){
+          return '♠';
+        }else{
+          return '♦';
+        }
+      }
+
+      function render_cards(ret){
+        if(ret.hole != null){
+          for (var i=0; i<ret.hole.length; i++){
+            card_str = ret.hole[i];
+            rank = card_str.slice(0,1);
+            suit = card_str.slice(1,2);
+            rankitem = '#p' + i + 'rank';
+            suititem = '#p' + i + 'suit';
+            suit = str_to_suit(suit);
+            if(rank == 'T'){
+              rank = '10';
+            }
+            $(rankitem).html(rank);
+            $(suititem).html(suit);
+          }
+        }
+        if(ret.opp_hole != null){
+          for (var i=0; i<ret.opp_hole.length; i++){
+            card_str = ret.opp_hole[i];
+            rank = card_str.slice(0,1);
+            suit = card_str.slice(1,2);
+            rankitem = '#o' + i + 'rank';
+            suititem = '#o' + i + 'suit';
+            suit = str_to_suit(suit);
+            if(rank == 'T'){
+              rank = '10';
+            }
+            $(rankitem).html(rank);
+            $(suititem).html(suit);
+          }
+        } else {
+          ;
+        }
+
+        if(ret.public_cards != null){
+          for (var i=0; i<ret.public_cards.length; i++){
+            card_str = ret.public_cards[i];
+            rank = card_str.slice(0,1);
+            suit = card_str.slice(1,2);
+            rankitem = '#pb' + i + 'rank';
+            suititem = '#pb' + i + 'suit';
+            suit = str_to_suit(suit);
+            if(rank == 'T'){
+              rank = '10';
+            }
+            $(rankitem).html(rank);
+            $(suititem).html(suit);
+          }
+        } else {
+          ;
+        }
+      }
+
+    });
+</script>
+</body>
+</html>

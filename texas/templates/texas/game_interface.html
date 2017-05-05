@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="game_interface.css">
+    <title></title>
+</head>
+<body>
+
+    <div class="game_interface">
+
+        <div class="poker_table">
+
+            <div class="oppo_area">
+                <div class="score_area">
+                    <div class="score_container">
+                       <p>score:<span class="score" id="oppo_score"></span></p>
+                    </div>
+                </div>
+                <div class="hole_area">
+                    <div class="card">
+                        <div class="rank"><span id="o0rank"></span></div>
+                        <div class="suit"><span id="o0suit"></span></div>
+                    </div>
+                    <div class="card">
+                        <div class="rank"><span id="o1rank"></span></div>
+                        <div class="suit"><span id="o1suit"></span></div>
+                    </div>
+                </div>
+                <div class="bet_area">
+                    <div class="bet_container">
+                        <p>total bets:<span class="bets" id='oppo_bet'></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="public_area">
+                <div class="pbcard">
+                    <div class="rank"><span id="pb0rank"></span></div>
+                    <div class="suit"><span id="pb0suit"></span></div>
+                </div>
+                <div class="pbcard">
+                    <div class="rank"><span id="pb1rank"></span></div>
+                    <div class="suit"><span id="pb1suit"></span></div>
+                </div>
+                <div class="pbcard">
+                    <div class="rank"><span id="pb2rank"></span></div>
+                    <div class="suit"><span id="pb2suit"></span></div>
+                </div>
+                <div class="pbcard">
+                    <div class="rank"><span id="pb3rank"></span></div>
+                    <div class="suit"><span id="pb3suit"></span></div>
+                </div>
+                <div class="pbcard">
+                    <div class="rank"><span id="pb4rank"></span></div>
+                    <div class="suit"><span id="pb4suit"></span></div>
+                </div>
+                <div>
+                    <input type="hidden" id="message" value="" />
+                </div>
+            </div>
+
+            <div class="player_area">
+                <div class="score_area">
+                    <div class="score_container">
+                       <p>score:<span class="score" id="player_score"></span></p>
+                    </div>
+                </div>
+                <div class="hole_area">
+                    <div class="card">
+                        <div class="rank"><span id="p0rank"></span></div>
+                        <div class="suit"><span id="p0suit"></span></div>
+                    </div>
+                    <div class="card">
+                        <div class="rank"><span id="p1rank"></span></div>
+                        <div class="suit"><span id="p1suit"></span></div>
+                    </div>
+                </div>
+                <div class="bet_area">
+                    <div class="bet_container">
+                        <p>total bets:<span class="bets" id="player_bet"></span></p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="button_area">
+                <div class="button_container">
+                    <button type="button" id="call" class="button" value="c">CALL/CHECK</button>
+                </div>
+                <div class="button_container">
+                    <button type="button" id="raise" class="button" value="r">RAISE/BET</button>
+                </div>
+                <div class="button_container">
+                    <button type="button" id="fold" class="button" value="f">FOLD</button>
+                </div>
+                <div class="button_container">
+                    <button type="button" id="next" class="button" value="n">NEXT_HAND</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
+ 
+
+
+
+
+
+
+<!-- 
+
+<div class="game_interface">
+
+    <div class="poker_table">
+        
+        <div class="oppo_area">
+            <div class="hole_and_stack">
+                <div class="hole">
+                    <div class="cardset">
+                        <div class="card" id="oppo_card_0">
+                            <div class="rank"><span id="o0rank"></span></div>
+                            <div class="suit"><span id="o0suit"></span></div>
+                        </div>
+                        <div class="card" id="oppo_card_1">
+                            <div class="rank"><span id="o1rank"></span></div>
+                            <div class="suit"><span id="o1suit"></span></div> 
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="oppo_stack">
+                    <span id='oppo_stack'></span>  
+                </div>
+            </div>
+
+            <div class="oppo_bet">
+                <span id='oppo_bet'></span>
+            </div>
+            
+
+        </div>
+
+        <div class="public_area">
+            <div class='cardset'>
+                <div class="card" id="public_card_0">
+                    <div class="rank"><span id="pb0rank"></span></div>
+                    <div class="suit"><span id="pb0suit"></span></div>
+                </div>
+                <div class="card" id="public_card_1">
+                    <div class="rank"><span id="pb1rank"></span></div>
+                    <div class="suit"><span id="pb1suit"></span></div>
+                </div>
+                <div class="card" id="public_card_2">
+                    <div class="rank"><span id="pb2rank"></span></div>
+                    <div class="suit"><span id="pb2suit"></span></div>
+                </div>
+                <div class="card" id="public_card_3">
+                    <div class="rank"><span id="pb3rank"></span></div>
+                    <div class="suit"><span id="pb3suit"></span></div>
+                </div>
+                <div class="card" id="public_card_4">
+                    <div class="rank"><span id="pb4rank"></span></div>
+                    <div class="suit"><span id="pb4suit"></span></div>
+                </div>
+            </div>    
+
+        </div>
+
+        <div class="player_area">
+
+            <div class="player_bet">
+                <span id='player_bet'></span>
+            </div>
+
+            <div class="hole_and_stack">
+                <div class="player_stack">
+                    <span id='player_stack'></span>
+                </div>
+                <div class="hole">
+                    <div class="cardset">
+                        <div class="card" id="player_card_0">
+                            <div class="rank"><span id="p0rank"></span></div>
+                            <div class="suit"><span id="p0suit"></span></div>
+                        </div>
+                        <div class="card" id="player_card_1">
+                            <div class="rank"><span id="p1rank"></div>
+                            <div class="suit"><span id="p1suit"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    
+
+</div>
+
+<div id="oppo_bet_remind">
+    
+</div>
+
+<div id="player_bet_remind">
+    
+</div>
+
+<div id="oppo_score">
+    
+</div>
+
+<div id="player_score">
+    
+</div>
+
+<div id="buttons">
+    <div >
+        <button type="button" id="call" class="btn_call" value="c">CALL/CHECK</button>
+    </div>
+
+    <div >
+        <button type="button" id="fold" class="btn_fold" value="f">FOLD</button>       
+    </div>
+
+    <div >
+        <button type="button" id="raise" class="btn_bet" value="r">BET/RAISE</button>       
+    </div>
+    
+</div>
+
+
+ -->

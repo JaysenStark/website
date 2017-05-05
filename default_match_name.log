@@ -1,0 +1,11 @@
+# name/game/hands/seed default_match_name ./texas/game/holdem.nolimit.2p.reverse_blinds.game 1000 315
+#--t_response 600000
+#--t_hand 600000
+#--t_per_hand 7000
+STATE:0:r300r675r2025f:9h8d|Qd2d:-675|675:hkl|superuser
+STATE:1:r225r20000f:4cJh|5hAd:225|-225:superuser|hkl
+STATE:2:r20000f:Qc9d|3sQs:-100|100:hkl|superuser
+STATE:3:r225r20000f:5cAc|6c8h:225|-225:superuser|hkl
+STATE:4:r20000f:9cTc|2s5d:-100|100:hkl|superuser
+STATE:5:cr20000f:4dTc|3cJd:100|-100:superuser|hkl
+STATE:6:r20000f:KsJh|2d9c:-100|100:hkl|superuser

@@ -1,0 +1,132 @@
+.game_interface{
+    margin: auto;
+    width: 80%;
+    height: 80%;
+    border:2px solid;
+}
+
+.rank{
+    font-size: 200%;
+}
+
+.suit{
+    font-size: 200%;
+}
+
+.poker_table{
+    height: 100%;
+    width: 100%;
+    /*background-color: red;*/
+}
+
+.score_area{
+    height: 100%;
+    width: 33%;
+    float: left;
+    /*background-color: black;*/
+}
+
+.score_container{
+    margin: 0 auto;
+    font-size: 300%;
+}
+
+.score{  
+    text-align: center;
+}
+
+.hole_area{
+    height: 100%;
+    width: 33%;
+    /*background-color: red;*/
+    float: left;
+}
+
+.hole_container{
+
+}
+
+.card{
+    border-radius: 10%;
+    width:25%;
+    margin-left: 5%;
+    height: 98%;
+    background-color: green;
+    float: left;
+    /*margin-top: 2%;*/
+}
+
+.pbcard{
+    border-radius: 10%;
+    width:8%;
+    margin-left: 3%;
+    height: 98%;
+    background-color: green;
+    float: left;
+    /*margin-top: 2%;*/
+}
+
+
+.bet_area{
+    height: 100%;
+    width: 33%;
+    float: left;
+    font-size: 300%;
+    /*background-color: green;*/
+}
+
+.bet_container{
+    margin: 0 auto;
+}
+
+.bet{
+    text-align: center;
+}
+
+.oppo_area{
+    width:100%;
+    height: 24%;
+    /*background-color: green;*/
+}
+
+.public_area{
+    width:100%;
+    height: 24%;
+    margin-left: 15%;
+/*    margin-top: 2%;*/
+    /*background-color: red;*/
+}
+
+.player_area{
+    width:100%;
+    height: 24%;
+    /*margin-top: 2%;*/
+    /*background-color: black;*/
+}
+
+.button_area{
+    width: 100%;
+    height: 24%;
+    /*background-color: green;*/
+}
+
+.button{
+    border-radius: 25%;
+    font-size: 200%;
+    float: left;
+    width: 20%;
+    height: 100%;
+    background-color: gray;
+}
+
+.blank_area{
+    height: 2%;
+    width: 100%;
+}
+
+.small_button_area{
+    height: 50%;
+    width: 100%;
+    margin-left: 13%;
+    margin-top: 4%;
+}
