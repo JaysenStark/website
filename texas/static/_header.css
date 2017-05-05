@@ -1,0 +1,23 @@
+.header{
+	/*row*/
+	display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction:row;
+}
+
+
+.user{
+	padding-left: 20px;
+	background-color: #11EEEE;
+	height:130px;
+	width:100%;
+}
+
+.username_container{
+	margin-top: 10px;
+	font-family: Century Gothic;
+}
+
+
+

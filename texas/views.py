@@ -1,21 +1,11 @@
-import os, sys
-
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 
-import subprocess
-import socket
-import pickle
-
 from . models import User
-from . gs import GameState
 from . gamehandler import GameHandler
 
-
-import time
 import logging
 import random
-import select
 
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG, 
@@ -33,6 +23,7 @@ def login(request):
     context = {}
 
     if res:
+        context = {'username': name}
         request.session['username'] = name
         return render(request, 'texas/choose.html', context)
     else:
@@ -42,8 +33,9 @@ def login(request):
 def start(request):
     username = request.session.get('username', default=None)
     GameHandler.start(username)
+    context = {'username': username}
 
-    return render(request, 'texas/play_no_limit_texas.html')
+    return render(request, 'texas/play_no_limit_texas.html', context)
 
 def update(request):
     logging.debug('update()')
