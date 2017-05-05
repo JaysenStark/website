@@ -1,3 +1,0 @@
-DEBUG:MATCHSTATE:1:0::|6dKh
-DEBUG:{'actions': ['call', 'fold', 'half_pot', 'one_pot', 'all_in', 'min_bet', 'bet_to'], 'min_bet': 200, 'showdown': False, 'round': 0, 'gameover': False, 'spent': 50, 'player_turn': True, 'opponent_hole': [], 'opponent_spent': 100, 'hole': ['6d', 'Kh'], 'public_cards': [], 'message': 'MATCHSTATE:1:0::|6dKh', 'score': 0}
-DEBUG:{'actions': ['call', 'fold', 'half_pot', 'one_pot', 'all_in', 'min_bet', 'bet_to'], 'min_bet': 200, 'showdown': False, 'round': 0, 'gameover': False, 'spent': 50, 'player_turn': True, 'opponent_hole': [], 'opponent_spent': 100, 'hole': ['6d', 'Kh'], 'public_cards': [], 'message': 'MATCHSTATE:1:0::|6dKh', 'score': 0}
