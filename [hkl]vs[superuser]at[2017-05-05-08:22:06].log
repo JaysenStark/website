@@ -1,9 +1,0 @@
-# name/game/hands/seed [hkl]vs[superuser]at[2017-05-05-08:22:06] ./texas/game/holdem.nolimit.2p.reverse_blinds.game 1000 422
-#--t_response 600000
-#--t_hand 600000
-#--t_per_hand 7000
-STATE:0:f:Qc2d|9d3h:50|-50:hkl|superuser
-STATE:1:r225f:Kc4d|ThKd:-100|100:superuser|hkl
-STATE:2:r20000f:KsQc|3d3s:-100|100:hkl|superuser
-STATE:3:f:9c4s|8c3h:50|-50:superuser|hkl
-STATE:4:r20000f:8h9d|4s8c:-100|100:hkl|superuser

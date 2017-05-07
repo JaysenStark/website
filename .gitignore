@@ -1,0 +1,5 @@
+texas/__pycache__/
+db.sqlite3
+texas/log/view_log.txt
+texas/*.log
+
