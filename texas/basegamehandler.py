@@ -2,8 +2,9 @@ import random
 import time
 from . gamestate import GameState
 from . communicator import Communicator
-from . dumbscript import Starter
+# from . dumbscript import Starter
 from . headsuptexas import NoLimitHeadsUpTexas as Game
+from . basestarter import QuickStarter as Starter
 
 class BaseGameHandler():
 
@@ -38,40 +39,42 @@ class HeadsUpTexasHandler(BaseGameHandler):
     game_pool = {}
 
     @classmethod
-    def start(cls, agentname, username):
+    def start(cls, agent_name, player_name):
         ports = cls.generate_ports()
         seed = cls.generate_seed()
 
         # no matter old game exist or not, overwrite it.
 
         # user starter to start one game
-        starter = Starter(ports, False)
-        starter.setting(ports, 'hkl', username, seed)
-        player_socket = starter.quick_start()
+        starter = Starter('hkl', player_name, ports)
+        # hand_number = 1000 default
+        player_socket = starter.quick_setting_and_start('NoLimitHeadsUpTexas', 1000, seed) 
+        # starter.setting(ports, 'hkl', player_name, seed)
+        # player_socket = starter.quick_start()
         gamestate = GameState()
-        game = Game(agentname, username, gamestate, player_socket)
-        cls.game_pool[username] = game
+        game = Game(agent_name, player_name, gamestate, player_socket)
+        cls.game_pool[player_name] = game
 
 
     @classmethod
-    def update_gamestate(cls, username, msg):
-        game = cls.game_pool.get(username, None)
+    def update_gamestate(cls, player_name, msg):
+        game = cls.game_pool.get(player_name, None)
         if not game:
             raise Exception
         game.update_gamestate(msg)
 
 
     @classmethod
-    def reset_gamestate(cls, username):
-        game = cls.game_pool.get(username, None)
+    def reset_gamestate(cls, player_name):
+        game = cls.game_pool.get(player_name, None)
         if not game:
             raise Exception
         game.reset_gamestate()
 
 
     @classmethod
-    def send_response(cls, username, context):
-        game = cls.game_pool.get(username, None)
+    def send_response(cls, player_name, context):
+        game = cls.game_pool.get(player_name, None)
         if not game:
             raise Exception
 
@@ -79,8 +82,8 @@ class HeadsUpTexasHandler(BaseGameHandler):
 
 
     @classmethod
-    def receive_msg(cls, username):
-        game = cls.game_pool.get(username, None)
+    def receive_msg(cls, player_name):
+        game = cls.game_pool.get(player_name, None)
         if not game:
             raise Exception
 
@@ -88,20 +91,15 @@ class HeadsUpTexasHandler(BaseGameHandler):
 
 
     @classmethod
-    def gamestate_to_dict(cls, username):
-        game = cls.game_pool.get(username, None)
+    def gamestate_to_dict(cls, player_name):
+        game = cls.game_pool.get(player_name, None)
         if not game:
             print(cls.game_pool)
             raise Exception
         return game.gamestate_to_dict()
 
 
-class LimitHeadsUpTexasHandler(HeadsUpTexasHandler):
-    pass
 
-
-class NoLimitHeadsUpTexasHandler(HeadsUpTexasHandler):
-    pass
 
         
 
