@@ -9,8 +9,7 @@ def start_hkl(port):
 
 
 def main():
-    #start_wpc(2000)
-    a =(1,2)
-    print(a[0])
+    pass
+    
 if __name__ == '__main__':
     main()

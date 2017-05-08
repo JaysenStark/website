@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 
 from . models import User
 # from . gamehandler import GameHandler
-from . basegamehandler import NoLimitHeadsUpTexasHandler as GameHandler
+from . gamehandler import NoLimitHeadsUpTexasHandler as GameHandler
 
 import logging
 import random
