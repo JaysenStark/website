@@ -1,6 +1,7 @@
 # from . constant import *
 # from constant import *
 from . pokereval.compare import Compare
+from . logging import getLogger
 import re
 # import Queue
 
@@ -26,6 +27,8 @@ AGENT = 0
 PLAYER = 1
 
 # MAX_ROUNDS_RAISES = [3, 4, 4, 4]
+
+HUNLGamestateLogger = getLogger('HUNLGamestate')
 
 class GameState():
 

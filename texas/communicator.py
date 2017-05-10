@@ -1,3 +1,6 @@
+from . logging import getLogger
+
+communicatorLogger = getLogger('communicator')
 
 class Communicator():
     ''' check, correct, send and receive msg/response between 
