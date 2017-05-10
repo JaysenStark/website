@@ -5,6 +5,7 @@ from . communicator import Communicator
 # from . dumbscript import Starter
 from . headsuptexas import NoLimitHeadsUpTexas as Game
 from . basestarter import QuickStarter as Starter
+from . logging import getLogger
 
 class BaseGameHandler():
 

@@ -2,11 +2,14 @@ from . debug import STARTER_VERBOSE
 
 from . utils import generate_ports
 from . communicator import Communicator
+from . logging import getLogger
 from . script_for_hkl import start_hkl
 
 import subprocess
 import time
 import socket
+
+starterLogger = getLogger('starter')
 
 class BaseStarter():
 
