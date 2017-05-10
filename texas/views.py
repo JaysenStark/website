@@ -2,16 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 
 from . models import User
-# from . gamehandler import GameHandler
 from . gamehandler import NoLimitHeadsUpTexasHandler as GameHandler
+from . logging import getLogger
 
-import logging
 import random
 
-
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG, 
-    filename='./texas/log/view_log.txt', filemode='w')
-
+viewLogger = getLogger('view')
 
 def index(request):
     return render(request, 'texas/index.html')
@@ -50,10 +46,10 @@ def start(request):
 
 
 def update(request):
-    logging.debug('update()')
+    viewLogger.debug('update()')
     username = request.session.get('username', default=None)
     msg = GameHandler.receive(username)
-    logging.debug(msg)
+    viewLogger.debug(msg)
     d = None
     if msg:
         GameHandler.update_gamestate(username, msg)
@@ -70,11 +66,11 @@ def action(request):
     if action == 'update':
         print('action=update')
         msg = GameHandler.receive_msg(username)
-        logging.debug(msg)
+        viewLogger.debug(msg)
             
         GameHandler.update_gamestate(username, msg)
         d = GameHandler.gamestate_to_dict(username)
-        logging.debug(d)
+        viewLogger.debug(d)
         return JsonResponse(d, safe=False)
 
     elif action == 'next':
@@ -83,7 +79,7 @@ def action(request):
         GameHandler.reset_gamestate(username)
         GameHandler.update_gamestate(username, msg)
         d = GameHandler.gamestate_to_dict(username)
-        logging.debug(d)
+        viewLogger.debug(d)
         return JsonResponse(d, safe=False)
         
     else:
@@ -95,7 +91,7 @@ def action(request):
         msg = GameHandler.receive_msg(username)
         GameHandler.update_gamestate(username, msg)
         d = GameHandler.gamestate_to_dict(username)
-        logging.debug(d)
+        viewLogger.debug(d)
         return JsonResponse(d, safe=False)
    
 
