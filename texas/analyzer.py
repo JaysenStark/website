@@ -4,6 +4,9 @@ from enums import ActionType, ActionNames, Round, RoundNames, CardType, CardName
 class Analyzer(object):
     """docstring for Analyzer"""
     
+    prefix = "MATCHSTATE"
+    seats = ["1", "2"]
+
     @classmethod
     def filter(cls, games):
         pass
@@ -31,33 +34,30 @@ class Analyzer(object):
         # record a list of Actions object
         actions = []
 
-        card_view1 = []
-        card_view2 = []
-
         actions_str = ""
+        l = []
         for action in action_generator:
+            l.append(action)
             if action.type == ActionType.NEXT_ROUND:
-                actions_str += "/"
-                actions[-1].actions_str += "/"
-                actions[-1].round += 1
+                actions.pop()
+                actions.append(Actions(l, action.round))
             else:
-                actions_str += action.action_str
-                actions.append(Actions(actions_str, action.round))
+                actions.append(Actions(l, action.round))
                 
 
-        for i in actions:
-            print(i)
+        # for i in actions:
+        #     print(i)
 
         cards = []
         l = list(card_generator)
         for i, card in enumerate(l):
             cards.append(Cards(l[0:i + 1]))
 
-        for i in cards:
-            print(i)
+        # for i in cards:
+        #     print(i)
            
 
-        res = cls.merge_history(actions, cards)
+        res = cls.merge(hands, actions, cards, scores, players)
         print(res)
 
     @classmethod
@@ -96,22 +96,27 @@ class Analyzer(object):
                 if part_action:
                     yield Action(part_action, round)
                     part_action = None
-                yield Action("/", round)
                 round += 1
+                yield Action("/", round)
         # end for loop
         if part_action:
             yield Action(part_action, round)
 
-    @classmethod
-    def merge_history(cls, actions, cards):
-        res = []
-        for action in actions:
-            for card in cards:
-                if action.round == card.round:
-                    res.append(action.actions_str + ":" + card.cards_str)
-                    break
-        return res
 
+    @classmethod
+    def merge(cls, hands, actions, cards, scores, players):
+
+        msgs = []
+        
+        for i in range(2):
+            for action in actions:
+                for card in cards:
+                    if action.round == card.round:
+                        l = [cls.prefix, cls.seats[i], hands, action.actions_str, card.cards_str]
+                        msgs.append(":".join(l))
+                        break
+
+        return msgs
 
 class Action():
 
@@ -142,8 +147,9 @@ class Action():
 
 class Actions():
     ''' a consquent sequence of Action instance '''
-    def __init__(self, actions_str, round):
-        self.actions_str = actions_str
+    def __init__(self, actions, round):
+        self.actions = actions
+        self.actions_str = "".join([action.action_str for action in actions])
         self.round = round
         
     def __str__(self):
@@ -190,5 +196,3 @@ g = Analyzer.rebuild_game("STATE:165:r300c/cr900c/cr2025c/cr4554r20000f:8cTd|AhT
 # print(Action("r500"))
 
 # Analyzer.rebuild_game("STATE:5:r600f:5d7s|AcKs:-100|100:guest1|hkl")
-
-    
